@@ -6,6 +6,15 @@
   font-weight: 700
   src: local(""), url('../assets/font/JosefinSans-Bold.woff2') format("woff2"), url('../assets/font/JosefinSans-Bold.woff') format("woff")
 
+@keyframes fadeIn
+  0%
+    opacity: 0
+  100%
+    opacity: 1
+
+.fade-in
+  animation: 1s fadeIn cubic-bezier(0.32, 0, 0.67, 0)
+
 body, html
   background: black
   overflow: hidden
