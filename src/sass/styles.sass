@@ -1,5 +1,51 @@
 @import "./normalize.scss"
 
+@font-face
+  font-family: 'Josefin Sans'
+  font-style: normal
+  font-weight: 700
+  src: local(""), url('../assets/font/JosefinSans-Bold.woff2') format("woff2"), url('../assets/font/JosefinSans-Bold.woff') format("woff")
+
 body, html
   background: black
   overflow: hidden
+  font-family: "Josefin Sans", monospace
+
+.upper
+  position: absolute
+  top: 0
+  left: 0
+  width: 100%
+  display: flex
+  justify-content: space-between
+  align-items: center
+  padding-top: 40px
+  transition: 0.4s
+  color: white
+  > h1
+    margin: 0
+    margin-right: 40px
+    transition: 0.4s
+    text-align: right
+  @media all and (max-width: 812px)
+    padding-top: 30px
+    > h1
+      font-size: 26px
+
+.logo
+  margin-left: 40px
+  align-self: flex-start
+  transition: 0.4s
+  > img
+    filter: brightness(50%)
+    transition: 0.4s
+    background: black
+    width: 96px
+    height: 96px
+    &:hover
+      filter: brightness(100%)
+  @media all and (max-width: 812px)
+    margin-left: 30px
+    > img
+      width: 70px
+      height: 70px
