@@ -56,7 +56,7 @@ function scripts() {
       }))
       .pipe(uglify())
 
-  return streamqueue({ objectMode: true }, src(paths.scripts + "lib/three.min.js"), jsStream)
+  return streamqueue({ objectMode: true }, src(paths.scripts + "lib/three.min.js"),  src(paths.scripts + "lib/LoaderSupport.js"), src(paths.scripts + "lib/OBJloader.js"), jsStream)
     .pipe(concat('zipper-bundle.min.js'))
     .pipe(dest(paths.dist + "js/"))
 }
