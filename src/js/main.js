@@ -89,7 +89,7 @@ let render = function () {
 
   zipper.position.y = (Math.abs(Math.sin(time)) * 3) + 20;
   //Turn the zipper
-  // zipper.rotation.z += .01
+  zipper.rotation.z -= .01
 
   renderer.render(scene, camera)
 }
