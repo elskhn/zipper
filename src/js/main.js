@@ -1,5 +1,3 @@
-
-
 let renderer, scene, camera, zipper
 let ww = window.innerWidth,
   wh = window.innerHeight
@@ -45,35 +43,38 @@ function init() {
   scene.add(ambientLight)
 
   let geometry = new THREE.PlaneGeometry(1000, 1000, 100)
-  let material = new THREE.MeshBasicMaterial({
-    color: 0xffffff,
-    side: THREE.DoubleSide
-  })
+  const material = new THREE.MeshPhongMaterial({
+    color: 0xffffff,    // red (can also use a CSS color string here)
+  });
   let plane = new THREE.Mesh(geometry, material)
   plane.position.y = -35
-  plane.rotation.set(-Math.PI / 2, Math.PI / 2000, Math.PI)
+  plane.rotation.set(-Math.PI / 2, Math.PI / 2000, Math.PI / 2)
+  plane.flatShading= true
   plane.receiveShadow = true
   scene.add(plane)
 
   loadOBJ()
+  console.log(scene);
+  
 }
 // load the .obj file
-let loadOBJ = function () {
+let loadOBJ = () => {
   // manager from ThreeJs to track a loader and its status
   let manager = new THREE.LoadingManager()
   // loader for Obj from Three.js
-  let loader = new THREE.OBJLoader(manager)
+  let loader = new THREE.OBJLoader2(manager)
   //  launch loading of the obj file, addZipperInScene() callback when ready 
-  loader.load('../assets/object/zipper.obj', addZipperInScene)
+  loader.load('../assets/object/zipper.obj', addZipperInScene, null, null, null)
 }
-let addZipperInScene = function (object) {
-  zipper = object
+let addZipperInScene = (object) => {
+  zipper = object.detail.loaderRootNode
+
   // set zipper position
   zipper.rotation.x = Math.PI / 2
   zipper.position.y = -100
   zipper.position.z = 400
   // iterate through all children of loaded object and search for a Mesh
-  object.traverse(function (child) {
+  zipper.children.forEach((child) => {
     // check if the child is an instance of Mesh constructor
     if (child instanceof THREE.Mesh) {
       child.material = new THREE.MeshPhongMaterial({
@@ -88,7 +89,7 @@ let addZipperInScene = function (object) {
       // compute vertex normals missing in the .obj file
       child.geometry.computeVertexNormals()
       child.geometry.center()
-      child.castShadow = true
+      child.castShadow = true  
     }
   })
 
@@ -110,20 +111,23 @@ let time = 0,
   delta = 0,
   clock = new THREE.Clock()
 
-let render = function () {
+let render = () => {
   requestAnimationFrame(render)
 
   // zipper bobbing up and down
   delta = clock.getDelta()
   time += delta
   zipper.position.y = (Math.abs(Math.sin(time)) * 3)
-
+  
   // turn the zipper!
-  zipper.rotation.z -= (targetRotationX + zipper.rotation.z) * 0.005
+  zipper.rotation.z -= (targetRotationX + zipper.rotation.z) * 0.008
 
   // console.log(Math.floor(zipper.position.x), Math.floor(zipper.position.y), Math.floor(zipper.position.z))
   renderer.render(scene, camera)
 }
+
+
+ /* mouse move and touch screen events (drag) */
 
 function onDocumentMouseDown(event) {
   event.preventDefault()
@@ -131,10 +135,8 @@ function onDocumentMouseDown(event) {
   document.addEventListener('mousemove', onDocumentMouseMove, false)
   document.addEventListener('mouseup', onDocumentMouseUp, false)
   document.addEventListener('mouseout', onDocumentMouseOut, false)
-
   mouseXOnMouseDown = event.clientX - windowHalfX
   targetRotationOnMouseDownX = targetRotationX
-
 }
 
 function onDocumentMouseMove(event) {
@@ -169,4 +171,5 @@ function onDocumentTouchMove(event) {
     targetRotationX = targetRotationOnMouseDownX + (mouseX - mouseXOnMouseDown) * 0.05
   }
 }
+
 init()
