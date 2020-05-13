@@ -20,7 +20,12 @@ const paths = {
 
 function html(cb) {
   return src(paths.src + "*.pug")
-    .pipe(pug())
+    .pipe(pug({
+      locals: {
+        cssLink: process.argv.includes("--dev") ? "./css/styles.min.css" : "https://uofczipper.netlify.app/css/styles.min.css",
+        jsBundleLink: process.argv.includes("--dev") ? "./js/zipper-bundle.min.js" : "https://uofczipper.netlify.app/js/zipper-bundle.min.js"
+      }
+    }))
     .on("error", (err) => {
       console.log(err.message + "\n")
       cb()
