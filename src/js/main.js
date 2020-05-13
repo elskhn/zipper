@@ -19,43 +19,48 @@ function init() {
   scene = new THREE.Scene()
   scene.background = new THREE.Color(0xe2e2e2)
   camera = new THREE.PerspectiveCamera(45, ww / wh, 0.1, 10000)
-  camera.position.set(0, 30, 520)
+  camera.position.set(0, 30, 540)
   camera.lookAt(0, -50, 0)
   scene.add(camera)
 
-  // scene lighting
-  // directionalLight = new THREE.DirectionalLight(0xffffff, 0.8)
-  // directionalLight.position.set(0, 20, 520)
-  // directionalLight.lookAt(new THREE.Vector3(0, -20, 0))
-  // scene.add(directionalLight)
-
-  directionalLightTop = new THREE.DirectionalLight(0xffffff, 1)
-  directionalLightTop.position.set(0, 240, 400)
-  directionalLightTop.lookAt(new THREE.Vector3(0, 0, 0))
-  // directionalLightTop.target.position.set(0, 0, 0);
-  directionalLightTop.castShadow = true
-  // directionalLightTop.shadow.mapSize.width = 2048
-  // directionalLightTop.shadow.mapSize.height = 2048
-  console.log(directionalLightTop.position)
-  scene.add(directionalLightTop)
-
-  ambientLight = new THREE.AmbientLight(0x353535)
-  scene.add(ambientLight)
-
-  let geometry = new THREE.PlaneGeometry(1000, 1000, 100)
-  const material = new THREE.MeshPhongMaterial({
-    color: 0xffffff,    // red (can also use a CSS color string here)
-  });
+  let geometry = new THREE.PlaneGeometry(900, 500)
+  const material = new THREE.ShadowMaterial()
+  material.opacity = 0.1
   let plane = new THREE.Mesh(geometry, material)
-  plane.position.y = -35
+  plane.position.y = -40
   plane.rotation.set(-Math.PI / 2, Math.PI / 2000, Math.PI / 2)
-  plane.flatShading= true
   plane.receiveShadow = true
   scene.add(plane)
 
-  loadOBJ()
-  console.log(scene);
+
+  // scene lighting
+  directionalLight = new THREE.DirectionalLight(0xffffff, 0.3)
+  directionalLight.position.set(0, 20, 520)
+  directionalLight.lookAt(new THREE.Vector3(0, -20, 0))
+  scene.add(directionalLight)
+
+  directionalLightTop = new THREE.DirectionalLight(0xffffff, 1)
+  directionalLightTop.position.set(0, 50, 400)
+  directionalLightTop.target.position.set(0, 30, 398)
+  directionalLightTop.castShadow = true
+  const camSize = 80
+  directionalLightTop.shadow.camera.left = - camSize
+  directionalLightTop.shadow.camera.right = camSize
+  directionalLightTop.shadow.camera.top = camSize
+  directionalLightTop.shadow.camera.bottom = - camSize
+  console.log(directionalLightTop.position)
+  scene.add(directionalLightTop)
+  scene.add(directionalLightTop.target)
+
+  // debug directional light position
+  // scene.add(new THREE.CameraHelper(directionalLightTop.shadow.camera))
   
+  ambientLight = new THREE.AmbientLight(0x353535)
+  scene.add(ambientLight)
+
+  loadOBJ()
+  console.log(scene)
+
 }
 // load the .obj file
 let loadOBJ = () => {
@@ -89,7 +94,7 @@ let addZipperInScene = (object) => {
       // compute vertex normals missing in the .obj file
       child.geometry.computeVertexNormals()
       child.geometry.center()
-      child.castShadow = true  
+      child.castShadow = true
     }
   })
 
@@ -118,7 +123,7 @@ let render = () => {
   delta = clock.getDelta()
   time += delta
   zipper.position.y = (Math.abs(Math.sin(time)) * 3)
-  
+
   // turn the zipper!
   zipper.rotation.z -= (targetRotationX + zipper.rotation.z) * 0.008
 
@@ -127,7 +132,7 @@ let render = () => {
 }
 
 
- /* mouse move and touch screen events (drag) */
+/* mouse move and touch screen events (drag) */
 
 function onDocumentMouseDown(event) {
   event.preventDefault()
