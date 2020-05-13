@@ -69,7 +69,7 @@ let loadOBJ = () => {
   // loader for Obj from Three.js
   let loader = new THREE.OBJLoader2(manager)
   //  launch loading of the obj file, addZipperInScene() callback when ready 
-  loader.load('../assets/object/zipper.obj', addZipperInScene, null, null, null)
+  loader.load('https://uofczipper.netlify.app/assets/object/zipper.obj', addZipperInScene, null, null, null)
 }
 let addZipperInScene = (object) => {
   zipper = object.detail.loaderRootNode
