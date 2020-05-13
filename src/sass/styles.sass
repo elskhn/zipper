@@ -16,9 +16,19 @@
   animation: 1s fadeIn cubic-bezier(0.32, 0, 0.67, 0)
 
 body, html
-  background: black
+  background: #6F6258
   overflow: hidden
   font-family: "Josefin Sans", monospace
+
+.accent
+  height: 8px
+  width: 100%
+  position: absolute
+  top: 0
+  left: 0
+  background: #d31324
+  background: linear-gradient(to right, #e8192b, #ae051c)
+  z-index: 10
 
 .upper
   position: absolute
@@ -28,10 +38,14 @@ body, html
   display: flex
   justify-content: space-between
   align-items: center
-  padding-top: 40px
   transition: 0.4s
   color: white
+  background: #6F6258
+  padding-top: 25px
+  padding-bottom: 10px
+  box-shadow: 0 0 35px 0px rgba(0, 0, 0, 0.3)
   > h1
+    user-select: none
     margin: 0
     margin-right: 40px
     transition: 0.4s
@@ -50,9 +64,10 @@ body, html
   align-self: flex-start
   transition: 0.4s
   > img
-    filter: brightness(50%)
+    user-select: none
+    filter: brightness(90%)
     transition: 0.4s
-    background: black
+    // background: #6F6258
     width: 96px
     height: 96px
     &:hover
