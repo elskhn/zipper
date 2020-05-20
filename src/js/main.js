@@ -118,7 +118,7 @@ let time = 0,
 
 let render = () => {
   requestAnimationFrame(render)
-
+  resizeCanvasToDisplaySize()
   // zipper bobbing up and down
   delta = clock.getDelta()
   time += delta
@@ -131,6 +131,17 @@ let render = () => {
   renderer.render(scene, camera)
 }
 
+
+function resizeCanvasToDisplaySize() {
+  const canvas = renderer.domElement;
+  const width = canvas.clientWidth;
+  const height = canvas.clientHeight;
+  if (canvas.width !== width || canvas.height !== height) {
+    renderer.setSize(width, height, false);
+    camera.aspect = width / height;
+    camera.updateProjectionMatrix();
+  }
+}
 
 /* mouse move and touch screen events (drag) */
 
